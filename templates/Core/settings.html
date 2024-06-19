@@ -1,0 +1,140 @@
+{% extends 'Core/base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Dashboard | VEUZ</title>
+{% endblock title %}
+
+{% block page-css %}
+<link rel="stylesheet" href="{% static 'assets/vendor/css/pages/page-profile.css' %}" />
+{% endblock page-css %}
+
+{% block content %}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <!-- Header -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card mb-4">
+          <div class="user-profile-header-banner">
+            <img src="{% static 'assets/img/pages/settings-banner.jpg' %}" alt="Banner image" class="rounded-top" />
+          </div>
+          <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
+            <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
+              <img
+                src="{% static 'assets/img/avatars/1.png' %}"
+                alt="user image"
+                class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img" />
+            </div>
+            <div class="flex-grow-1 mt-3 mt-sm-5">
+              <div
+                class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
+                <div class="user-profile-info">
+                  <h4>{{ employee.First_Name }} {{ employee.Last_Name }}</h4>
+                  <ul
+                    class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
+                    <li class="list-inline-item fw-medium"><i class="bx bx-envelope"></i> {{ employee.Email }}</li>
+                  </ul>
+                </div>
+                <!-- <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
+                  <i class="bx bx-user-check me-1"></i>Connected
+                </a> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--/ Header -->
+
+    <!-- Navbar pills -->
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-pills flex-column flex-sm-row mb-4">
+          <li class="nav-item">
+            <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href=""><i class="bx bx-list-ul me-1"></i> Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href=""><i class="bx bx-grid-alt me-1"></i> Projects</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!--/ Navbar pills -->
+
+    <!-- User Profile Content -->
+    <div class="row">
+      <div class="col-xl-12 col-lg-12 col-md-12">
+        
+        <!-- About User -->
+        <div class="card mb-4">
+          <div class="card-body">
+              <div class="row" id="data-div">
+                
+                <input type="hidden" id="employee-id" value="{{ employee.id }}">
+
+                <div class="mb-3 col-md-6">
+                  <label for="firstName" class="form-label">First Name</label>
+                  <input class="form-control" type="text" id="firstName" name="firstName" value="{{ employee.First_Name }}"/>
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="lastName" class="form-label">Last Name</label>
+                  <input class="form-control" type="text" id="lastName" name="lastName" value="{{ employee.Last_Name }}" />
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="email" class="form-label">E-mail</label>
+                  <input class="form-control" type="email" id="email" name="email" value="{{ employee.Email }}" />
+                </div>
+
+                <div class="mb-3 col-md-6">
+                  <label for="mobile" class="form-label">Mobile</label>
+                  <input class="form-control" type="text" id="mobile" name="mobile" value="{{ employee.Mobile }}" />
+                </div>
+
+                {% for data in datas %}
+                  <div class="mb-3 col-md-6">
+                    <label for="" class="form-label">{{ data.Field_Name }}</label>
+                    <div class="input-group">
+                      <input class="form-control ad-data" data-id="{{ data.id }}" type="text" value="{{ data.Data }}" />
+                      <span id="{{ data.id }}" class="input-group-text cursor-pointer data-delete">
+                        <a href="{% url 'delete-employee-data' data.id %}">
+                          <i class="bx bx-trash text-danger"></i>
+                        </a>
+                      </span>
+                    </div>
+                  </div>
+                {% endfor %}
+
+              </div>
+
+              <div class="col-md-12 text-center" id="add-div">
+
+              </div>
+
+              <div class="col-md-12 text-center">
+                <button type="button" class="btn btn-primary btn-sm" id="adb">Add New Data</button>
+              </div>
+
+              <div class="mt-2">
+                <!-- <button type="submit" class="btn btn-primary me-2">Save changes</button> -->
+                <a class="btn btn-label-secondary" href="{% url 'employees' %}">Return Back</a>
+              </div>
+          </div>
+        </div>
+        <!--/ About User -->
+
+      </div>
+    </div>
+    <!--/ User Profile Content -->
+</div>
+
+{% endblock content %}
+
+{% block page-js %}
+<script src="{% static 'assets/js/app-user-view-account.js' %}"></script>
+<script src="{% static 'js/settings.js' %}"></script>
+{% endblock page-js %}
