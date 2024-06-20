@@ -151,7 +151,7 @@
                         <a href="{% url 'settings' employee.id %}">
                           <i class="bx bx-cog bx-sm me-2 text-warning" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="bottom" data-bs-html="true" title="Settings"></i>
                         </a>
-                        <a href="{% url 'delete-employee' employee.id %}">
+                        <a href="{% url 'delete-employee' employee.id %}" onclick="return confirm('Are you sure you want to delete {{ employee.First_Name}} {{ employee.Last_Name }}?');">
                           <i class="bx bx-trash bx-sm ms-2 text-danger" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="bottom" data-bs-html="true" title="Delete"></i>
                         </a>
                       </td>

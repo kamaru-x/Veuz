@@ -101,7 +101,7 @@
                     <div class="input-group">
                       <input class="form-control ad-data" data-id="{{ data.id }}" type="text" value="{{ data.Data }}" />
                       <span id="{{ data.id }}" class="input-group-text cursor-pointer data-delete">
-                        <a href="{% url 'delete-employee-data' data.id %}">
+                        <a href="{% url 'delete-employee-data' data.id %}" onclick="return confirm('Are you sure you want to delete {{ data.Field_Name }} field?');">
                           <i class="bx bx-trash text-danger"></i>
                         </a>
                       </span>
