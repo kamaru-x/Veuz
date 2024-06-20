@@ -42,4 +42,24 @@ $(document).ready(function(){
             },
         })
     })
+
+    $('.delete-link').on('click', function(e) {
+        e.preventDefault();
+        
+        var url = $(this).attr('href');
+        
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `You are about to delete. This action cannot be undone.`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
 })

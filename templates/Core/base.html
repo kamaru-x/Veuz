@@ -35,6 +35,17 @@
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/typeahead-js/typeahead.css' %}" />
     <link rel="stylesheet" href="{% static 'assets/vendor/libs/apex-charts/apex-charts.css' %}" />
 
+    <style>
+      /* Override SweetAlert backdrop styles */
+      .swal2-container.swal2-backdrop-show,
+      .swal2-container.swal2-noanimation {
+          background: rgba(0, 0, 0, 0) !important; /* Fully transparent background */
+      }
+      .swal2-popup {
+        border: 1px solid lightgray; /* Add border to SweetAlert popup */
+      }
+    </style>
+
     <!-- Page CSS -->
     {% block page-css %}
 
