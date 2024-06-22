@@ -3,18 +3,10 @@ from U_Auth.models import User
 
 # Create your models here.
 
-TYPE = [
-    ('text','text'),
-    ('number','number'),
-    ('lgtext','lgtext'),
-    ('select','select'),
-    ('radio','radio'),
-]
-
 class Field(models.Model):
     Added = models.ForeignKey(User,on_delete=models.CASCADE)
     Field_Name = models.CharField(max_length=225)
-    Field_Type = models.CharField(max_length=20,choices=TYPE)
+    Field_Type = models.CharField(max_length=20)
 
     def __str__(self):
         return self.Field_Name

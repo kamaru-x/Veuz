@@ -4,6 +4,7 @@ from django.contrib import messages
 from Core.models import Field,Option,Employee,Employee_Details
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 # Create your views here.
 
@@ -171,7 +172,14 @@ def search_employee(request):
     if request.method == 'POST':
         query = request.POST.get('query')
         if query is not None:
-            result = Employee.objects.filter(Added=request.user).filter(First_Name__icontains=query).order_by('-id')
+            
+            result = result = Employee.objects.filter(Added=request.user).filter(
+                Q(First_Name__icontains=query) |
+                Q(Last_Name__icontains=query) |
+                Q(Email__icontains=query) |
+                Q(Mobile__icontains=query)
+            ).order_by('-id')
+
             data = list(result.values())
             return JsonResponse({'status': 'success', 'result': data})
         else:

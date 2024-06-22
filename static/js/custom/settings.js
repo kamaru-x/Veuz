@@ -35,6 +35,7 @@ $(document).ready(function(){
         var selectOptions = `
             <option value="text" ${currentType === 'text' ? 'selected' : ''}>Text</option>
             <option value="number" ${currentType === 'number' ? 'selected' : ''}>Number</option>
+            <option value="date" ${currentType === 'date' ? 'selected' : ''}>Date</option>
         `;
 
         itemType.html(`<select class="form-select">${selectOptions}</select>`);
