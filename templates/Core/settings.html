@@ -2,139 +2,159 @@
 {% load static %}
 
 {% block title %}
-    <title>Dashboard | VEUZ</title>
+    <title>Employees | VEUZ</title>
 {% endblock title %}
 
 {% block page-css %}
-<link rel="stylesheet" href="{% static 'assets/vendor/css/pages/page-profile.css' %}" />
+
 {% endblock page-css %}
 
 {% block content %}
 <div class="container-xxl flex-grow-1 container-p-y">
-    <!-- Header -->
-    <div class="row">
-      <div class="col-12">
-        <div class="card mb-4">
-          <div class="user-profile-header-banner">
-            <img src="{% static 'assets/img/pages/settings-banner.jpg' %}" alt="Banner image" class="rounded-top" />
-          </div>
-          <div class="user-profile-header d-flex flex-column flex-sm-row text-sm-start text-center mb-4">
-            <div class="flex-shrink-0 mt-n2 mx-sm-0 mx-auto">
-              <img
-                src="{% static 'assets/img/avatars/1.png' %}"
-                alt="user image"
-                class="d-block h-auto ms-0 ms-sm-4 rounded user-profile-img" />
-            </div>
-            <div class="flex-grow-1 mt-3 mt-sm-5">
-              <div
-                class="d-flex align-items-md-end align-items-sm-start align-items-center justify-content-md-between justify-content-start mx-4 flex-md-row flex-column gap-4">
-                <div class="user-profile-info">
-                  <h4>{{ employee.First_Name }} {{ employee.Last_Name }}</h4>
-                  <ul
-                    class="list-inline mb-0 d-flex align-items-center flex-wrap justify-content-sm-start justify-content-center gap-2">
-                    <li class="list-inline-item fw-medium"><i class="bx bx-envelope"></i> {{ employee.Email }}</li>
-                  </ul>
-                </div>
-                <!-- <a href="javascript:void(0)" class="btn btn-primary text-nowrap">
-                  <i class="bx bx-user-check me-1"></i>Connected
-                </a> -->
-              </div>
-            </div>
+    <!-- Users List Table -->
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="card card-action mb-4">
+        <div class="card-header align-items-center">
+          <h5 class="card-action-title mb-0">List of Employees Fields</h5>
+          <div class="card-action-element">
+            <button
+              class="btn btn-primary btn-sm"
+              type="button"
+              data-bs-toggle="modal"
+              data-bs-target="#addField">
+              <i class="bx bx-plus bx-xs me-1"></i>ADD FIELD
+            </button>
           </div>
         </div>
-      </div>
-    </div>
-    <!--/ Header -->
 
-    <!-- Navbar pills -->
-    <div class="row">
-      <div class="col-md-12">
-        <ul class="nav nav-pills flex-column flex-sm-row mb-4">
-          <li class="nav-item">
-            <a class="nav-link active" href="javascript:void(0);"><i class="bx bx-user me-1"></i> Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href=""><i class="bx bx-list-ul me-1"></i> Tasks</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href=""><i class="bx bx-grid-alt me-1"></i> Projects</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!--/ Navbar pills -->
+        <div class="card-body">
+            <div class="table-responsive text-nowrap">
+              <table class="table table-bordered">
+                <thead class="text-center">
+                  <tr>
+                    <th class="text-primary fw-bold">FIELD NAME</th>
+                    <th class="text-primary fw-bold">FIELD TYPE</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center" id="emp-table">
+                    
+                    <tr>
+                      <td>First Name</td>
+                      <td>Text Field</td>
+                    </tr>
 
-    <!-- User Profile Content -->
-    <div class="row">
-      <div class="col-xl-12 col-lg-12 col-md-12">
-        
-        <!-- About User -->
-        <div class="card mb-4">
+                    <tr>
+                      <td>Last Name</td>
+                      <td>Text Field</td>
+                    </tr>
+
+                    <tr>
+                      <td>Email</td>
+                      <td>Email Field</td>
+                    </tr>
+
+                    <tr>
+                      <td>Mobile Number</td>
+                      <td>Number Field</td>
+                    </tr>
+
+                </tbody>
+              </table>
+            </div>
+        </div>
+
+        {% if fields %}
+          <h6 class="text-center">ADDITIONAL FIELDS</h6>
+
           <div class="card-body">
-              <div class="row" id="data-div">
-                
-                <input type="hidden" id="employee-id" value="{{ employee.id }}">
+            <div class="table-responsive text-nowrap">
+              <table class="table table-bordered">
+                <thead class="text-center">
+                  <tr>
+                    <th class="text-primary fw-bold">FIELD NAME</th>
+                    <th class="text-primary fw-bold">FIELD TYPE</th>
+                    <!-- <th class="text-primary fw-bold">OPTIONS</th> -->
+                    <th class="text-primary fw-bold">ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody class="text-center" id="emp-table">
+                    
+                  {% for field in fields %}
+                    <tr>
+                      <td class="field-name">{{ field.Field_Name }}</td>
+                      <td class="field-type" style="text-transform: capitalize;">{{ field.Field_Type }}</td>
+                      <!-- <td>----------</td> -->
+                      <td>
+                        <i data-id="{{ field.id }}" class="bx bx-cog bx-sm me-2 text-warning edit-button" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#editField" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="bottom" data-bs-html="true" title="Settings"></i>
+                        {% if count == 0 %}
+                          <i data-id="{{ field.id }}" class="bx bx-trash bx-sm text-danger delete-button" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="bottom" data-bs-html="true" title="Delete"></i>
+                        {% endif %}
+                      </td>
+                    </tr>
+                  {% endfor %}
 
-                <div class="mb-3 col-md-6">
-                  <label for="firstName" class="form-label">First Name</label>
-                  <input class="form-control" type="text" id="firstName" name="firstName" value="{{ employee.First_Name }}"/>
-                </div>
-
-                <div class="mb-3 col-md-6">
-                  <label for="lastName" class="form-label">Last Name</label>
-                  <input class="form-control" type="text" id="lastName" name="lastName" value="{{ employee.Last_Name }}" />
-                </div>
-
-                <div class="mb-3 col-md-6">
-                  <label for="email" class="form-label">E-mail</label>
-                  <input class="form-control" type="email" id="email" name="email" value="{{ employee.Email }}" />
-                </div>
-
-                <div class="mb-3 col-md-6">
-                  <label for="mobile" class="form-label">Mobile</label>
-                  <input class="form-control" type="text" id="mobile" name="mobile" value="{{ employee.Mobile }}" />
-                </div>
-
-                {% for data in datas %}
-                  <div class="mb-3 col-md-6">
-                    <label for="" class="form-label">{{ data.Field_Name }}</label>
-                    <div class="input-group">
-                      <input class="form-control ad-data" data-id="{{ data.id }}" type="text" value="{{ data.Data }}" />
-                      <span id="{{ data.id }}" class="input-group-text cursor-pointer data-delete">
-                        <a href="{% url 'delete-employee-data' data.id %}" onclick="return confirm('Are you sure you want to delete {{ data.Field_Name }} field?');">
-                          <i class="bx bx-trash text-danger"></i>
-                        </a>
-                      </span>
-                    </div>
-                  </div>
-                {% endfor %}
-
-              </div>
-
-              <div class="col-md-12 text-center" id="add-div">
-
-              </div>
-
-              <div class="col-md-12 text-center">
-                <button type="button" class="btn btn-primary btn-sm" id="adb">Add New Data</button>
-              </div>
-
-              <div class="mt-2">
-                <!-- <button type="submit" class="btn btn-primary me-2">Save changes</button> -->
-                <a class="btn btn-label-secondary" href="{% url 'employees' %}">Return Back</a>
-              </div>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-        <!--/ About User -->
+        {% endif %}
 
+    </div>
+</div>
+
+<!-- Add Field Modal -->
+<div class="modal fade" id="addField" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+      <div class="modal-content p-3 p-md-5">
+        <div class="modal-body">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="text-center mb-4">
+            <h3>Add New Field</h3>
+            <p>These fields will be the fields while you creating employee</p>
+          </div>
+          <form id="editUserForm" class="row g-3" method="post" action="{% url 'add-dynamic-field' %}">
+            {% csrf_token %}
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUserFirstName">Field Name</label>
+              <input type="text" id="fieldname" name="name" class="form-control" placeholder="Enter field name here" required/>
+            </div>
+
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="modalEditUserFirstName">Field Type</label>
+              <select name="type" id="select" class="form-control" required>
+                <option value="">Select Field Type</option>
+                <option value="text">Text Field</option>
+                <!-- <option value="lgtext">Large Text Field</option> -->
+                <option value="number">Number Field</option>
+                <!-- <option value="select">Selection Box</option>
+                <option value="radio">Enum Type Data ( Radio Box )</option> -->
+              </select>
+            </div>
+            
+            <div class="col-12 text-center">
+              <button type="submit" class="btn btn-primary me-sm-3 me-1">Submit</button>
+              <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close"> Cancel </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
-    <!--/ User Profile Content -->
 </div>
+<!--/ Add Field Modal -->
 
 {% endblock content %}
 
 {% block page-js %}
-<script src="{% static 'assets/js/app-user-view-account.js' %}"></script>
-<script src="{% static 'js/settings.js' %}"></script>
+<!-- <script src="{% static 'assets/js/app-user-list.js' %}"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+<script src="{% static 'js/custom/settings.js' %}"></script>
 {% endblock page-js %}

@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from U_Auth.models import User
 from django.contrib.auth import update_session_auth_hash
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -25,6 +27,7 @@ def sign_in(request):
 
 #------------------------------------------------- REGISTER ---------------------------------------------------#
 
+@csrf_exempt
 def register(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -33,17 +36,15 @@ def register(request):
         cpassword = request.POST.get('cpassword')
 
         if User.objects.filter(email=email).exists():
-            messages.error(request, 'A user with the same email already exists.')
-            return redirect('register')  
+            return JsonResponse({'status':'error','message':'A user with the same email already exists.'})
         
-        if password != cpassword:
-            messages.error(request, 'Passwords do not match. Please try again.')
-            return redirect('register')  
+        elif password != cpassword:
+            return JsonResponse({'status':'error','message':'Passwords do not match. Please try again.'})
         
-        user = User.objects.create_user(first_name=name, username=email, email=email, password=password)
-
-        login(request, user)
-        return redirect('dashboard')
+        else:
+            user = User.objects.create_user(first_name=name, username=email, email=email, password=password)
+            login(request, user)
+            return JsonResponse({'status': 'success', 'message': 'User registered successfully.'})
     
     return render(request, 'Auth/register.html')
 

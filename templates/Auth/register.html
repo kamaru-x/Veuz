@@ -88,14 +88,10 @@
                     <input type="password" id="cpassword" class="form-control" name="cpassword" placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" aria-describedby="password" required/>
                 </div>
 
-                {% if messages %}
-                  {% for message in messages %}
-                    <p class="text-danger text-center">{{ message }}</p>
-                  {% endfor %}
-                {% endif %}
+                <p class="text-danger text-center" id="error-msg"></p>
 
                 <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Create Account</button>
+                  <button class="btn btn-primary d-grid w-100" type="button" id="register-button">Create Account</button>
                 </div>
               </form>
 
@@ -156,5 +152,6 @@
 
     <!-- Page JS -->
     <script src="{% static 'assets/js/pages-auth.js' %}"></script>
+    <script src="{% static 'js/custom/register.js' %}"></script>
   </body>
 </html>

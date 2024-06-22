@@ -92,19 +92,19 @@
                 </a>
             </li>
 
+            <li class="menu-item {% if page == 'settings' %} active {% endif %}">
+                <a href="{% url 'settings' %}" class="menu-link">
+                  <i class="menu-icon tf-icons bx bx-cog"></i>
+                  <div class="text-truncate" data-i18n="Settings">Settings</div>
+                </a>
+            </li>
+
             <li class="menu-item {% if page == 'employees' %} active {% endif %}">
                 <a href="{% url 'employees' %}" class="menu-link">
                   <i class="menu-icon tf-icons bx bx-user"></i>
                   <div class="text-truncate" data-i18n="Employees">Employees</div>
                 </a>
             </li>
-
-            <!-- <li class="menu-item {% if page == 'settings' %} active {% endif %}">
-                <a href="" class="menu-link">
-                  <i class="menu-icon tf-icons bx bx-cog"></i>
-                  <div class="text-truncate" data-i18n="Settings">Settings</div>
-                </a>
-            </li> -->
 
           </ul>
         </aside>
@@ -146,7 +146,7 @@
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a class="dropdown-item" href="">
+                      <a class="dropdown-item" href="{% url 'profile' %}">
                         <div class="d-flex">
                           <div class="flex-shrink-0 me-3">
                             <div class="avatar avatar-online">
@@ -174,7 +174,7 @@
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="{% url 'profile' %}">
+                      <a class="dropdown-item" href="{% url 'settings' %}">
                         <i class="bx bx-cog me-2"></i>
                         <span class="align-middle">Settings</span>
                       </a>
