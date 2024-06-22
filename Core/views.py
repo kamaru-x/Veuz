@@ -99,7 +99,6 @@ def add_employee(request):
             )
 
             for field, data in zip(fields, datas):
-                print(f'{field.Field_Name} : {data}')
                 Employee_Details.objects.create(Employee=employee,Field=field,Data=data)
 
             messages.success(request,'new employee added successfully ... !')
@@ -172,7 +171,7 @@ def search_employee(request):
     if request.method == 'POST':
         query = request.POST.get('query')
         if query is not None:
-            
+
             result = result = Employee.objects.filter(Added=request.user).filter(
                 Q(First_Name__icontains=query) |
                 Q(Last_Name__icontains=query) |

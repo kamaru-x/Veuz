@@ -46,12 +46,15 @@ $(document).ready(function(){
         var item = $(this);
 
         if (confirm("Are you sure you want to delete this item?")) {
+
+            item.closest('tr').remove();
+
             $.ajax({
                 url: '/employee/delete/',
                 type: 'POST',
                 data: { 'id': id },
                 success: function(response){
-                    item.closest('tr').remove();
+                    console.log(response.status)
                 },
                 error: function(xhr, status, error){
                     console.error('AJAX request failed:', status, error);
