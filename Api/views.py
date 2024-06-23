@@ -48,9 +48,9 @@ class EmployeeUpdate(generics.UpdateAPIView):
 
 # ----------------------------------------------- FUNCTION BASED API VIEWS ----------------------------------- #
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
-# @permission_classes([IsAuthenticated])
-def employee(request, id=None):
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def employees(request):
     if request.method == 'GET':
         employees = Employee.objects.filter(Added=request.user)
         serializer = EmployeeSerializer(employees, many=True)
@@ -62,13 +62,21 @@ def employee(request, id=None):
             serializer.save(Added=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def employee(request, id):
+    try:
+        employee = Employee.objects.get(id=id, Added=request.user)
+    except Employee.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
     
-    elif request.method == 'PUT' or request.method == 'PATCH':
-        try:
-            employee = Employee.objects.get(id=id, Added=request.user)
-        except Employee.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
+    if request.method == 'GET':
+        serializer = EmployeeSerializer(employee)
+        return Response(serializer.data)
+    
+    elif request.method in ['PUT', 'PATCH']:
         serializer = EmployeeSerializer(employee, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
@@ -76,10 +84,5 @@ def employee(request, id=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
-        try:
-            employee = Employee.objects.get(id=id, Added=request.user)
-        except Employee.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
         employee.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

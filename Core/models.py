@@ -21,7 +21,7 @@ class Employee(models.Model):
     First_Name = models.CharField(max_length=100)
     Last_Name = models.CharField(max_length=100,null=True)
     Email = models.EmailField()
-    Mobile = models.CharField(max_length=15)
+    Mobile = models.CharField(max_length=20)
 
     def __str__(self):
         return self.First_Name
